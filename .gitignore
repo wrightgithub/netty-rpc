@@ -1,0 +1,23 @@
+*.class
+*.iml
+*.swp
+
+# Package Files #
+*.jar
+*.war
+*.ear
+*.bak
+*tree
+
+target
+.idea 
+fileSys
+bin
+node_modules 
+
+
+*.log.*
+*.log
+.settings
+.svn
+.classpath
