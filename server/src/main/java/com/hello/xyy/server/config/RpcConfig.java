@@ -1,4 +1,4 @@
-package com.hello.xyy.server;
+package com.hello.xyy.server.config;
 
 import org.springframework.context.annotation.Configuration;
 
