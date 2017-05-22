@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
  * |   God bless this code      |
  * |                            |
  * +----------------------------+
- *
+ * @see com.hello.xyy.client.ConsumerTest
  * @author lihao
  * @date 2017/05/11
  */

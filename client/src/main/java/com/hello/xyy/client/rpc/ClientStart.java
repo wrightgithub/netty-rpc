@@ -1,10 +1,15 @@
 package com.hello.xyy.client.rpc;
 
+import java.util.concurrent.TimeUnit;
+
 import com.hello.xyy.client.handler.ClientMessageSendHandler;
 import com.hello.xyy.client.handler.SendHandlerLoader;
 import io.netty.bootstrap.Bootstrap;
+import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelFutureListener;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelPipeline;
+import io.netty.channel.EventLoop;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
@@ -16,6 +21,7 @@ import io.netty.handler.codec.serialization.ObjectDecoder;
 import io.netty.handler.codec.serialization.ObjectEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 
 /**
@@ -34,9 +40,8 @@ public class ClientStart {
 
     public static void startClient(String ipAddr, String interFaceName) {
 
-        if (ipAddr == null) {
-
-        }
+        Assert.notNull(ipAddr);
+        Assert.notNull(interFaceName);
         String[] strs = StringUtils.split(ipAddr, DELIMITER);
         String ip = strs[0];
         int port = Integer.parseInt(strs[1]);
@@ -62,10 +67,17 @@ public class ClientStart {
 
                  }
              });
-            SendHandlerLoader.put(interFaceName, clientMessageSendHandler);
-            b.connect(ip, port).sync();
-
-            // todo 连接重试
+            b.connect(ip, port).addListener((ChannelFutureListener)channelFuture -> {
+                // 连接重试
+                if (channelFuture.isSuccess()) {
+                    SendHandlerLoader.put(interFaceName, clientMessageSendHandler);
+                } else {
+                    channelFuture.channel().eventLoop().schedule(() -> {
+                        System.out.println("NettyRPC server is down,start to reconnecting to: " + ipAddr);
+                        startClient(ipAddr, interFaceName);
+                    }, 2, TimeUnit.SECONDS);
+                }
+            });
 
         } catch (Exception e) {
             logger.error(e.getMessage(), e);
