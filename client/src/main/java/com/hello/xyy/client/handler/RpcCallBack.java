@@ -48,13 +48,15 @@ public class RpcCallBack {
     //
     //}
 
-    public Object waitResponse() throws InterruptedException {
+    public Object waitResponse() throws Throwable {
         lock.lock();
         try {
             while (response == null) {
                 condition.await();
             }
-
+            if (response.getThrowable() != null) {
+                throw response.getThrowable();
+            }
             return this.response.getResult();
         } finally {
             lock.unlock();

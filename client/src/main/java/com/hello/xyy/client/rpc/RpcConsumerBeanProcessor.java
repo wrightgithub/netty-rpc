@@ -68,7 +68,7 @@ public class RpcConsumerBeanProcessor implements BeanFactoryPostProcessor, BeanC
 
             Class<?> clazz = ClassUtils.resolveClassName(beanDefinition.getBeanClassName(), this.classLoader);
 
-            ReflectionUtils.doWithFields(clazz, field -> {
+            ReflectionUtils.doWithFields(clazz, (Field field) -> {
                 RpcConsumer rpcConsumer = AnnotationUtils.getAnnotation(field, RpcConsumer.class);
                 if (rpcConsumer == null) {
                     return;
@@ -85,7 +85,6 @@ public class RpcConsumerBeanProcessor implements BeanFactoryPostProcessor, BeanC
 
                 BeanDefinitionRegistry registry = (BeanDefinitionRegistry)beanFactory;
                 registry.registerBeanDefinition(field.getName(), rootBeanDefinition);
-
                 ClientStart.startClient(IpAddr, field.getType().getName());
 
             });

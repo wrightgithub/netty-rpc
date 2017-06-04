@@ -18,4 +18,5 @@ public interface HelloMBean {
     void printHello();
 
     void printHello(String whoName);
+
 }

@@ -1,5 +1,9 @@
 package com.hello.xyy.client;
 
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
+
 import com.hello.xyy.client.consumer.ConsumerService;
 import com.hello.xyy.client.consumer.ConsumerService2;
 import org.junit.Test;
@@ -32,11 +36,20 @@ public class ConsumerTest {
     @Test
     public void test() {
         consumerService.test();
-
     }
 
     @Test
-    public void test2(){
+    public void test_connection_retry() {
+        ScheduledExecutorService executorService = Executors.newScheduledThreadPool(1);
+        executorService.scheduleAtFixedRate(() -> {
+            consumerService.test();
+        }, 0, 1, TimeUnit.SECONDS);
+
+        while (true) { ; }
+    }
+
+    @Test
+    public void test2() {
         consumerService.test2();
         consumerService2.test2();
     }

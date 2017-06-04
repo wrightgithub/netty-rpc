@@ -21,4 +21,5 @@ public class Response implements Serializable {
     private boolean success;
     private String message;
     private Object result;
+    private Throwable throwable;
 }

@@ -20,8 +20,19 @@ import com.hello.xyy.model.Request;
  * @date 2017/05/12
  */
 public class ConsumerProxy implements InvocationHandler {
+
+    private String interFaceName;
+    private String ipAddr;
+
+    public ConsumerProxy(String ipAddr,String interFaceName) {
+        this.interFaceName = interFaceName;
+        this.ipAddr = ipAddr;
+    }
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
+        ClientStart.startClient(ipAddr, interFaceName);
+
         Request request = new Request();
         request.setMessageId(UUID.randomUUID().toString());
         request.setMethod(method.getName());
@@ -32,5 +43,21 @@ public class ConsumerProxy implements InvocationHandler {
         RpcCallBack rpcCallBack = new RpcCallBack(request);
         SendHandlerLoader.getHandler(interFaceName).send(rpcCallBack);
         return rpcCallBack.waitResponse();
+    }
+
+    public Object getInterFaceName() {
+        return interFaceName;
+    }
+
+    public void setInterFaceName(String interFaceName) {
+        this.interFaceName = interFaceName;
+    }
+
+    public String getIpAddr() {
+        return ipAddr;
+    }
+
+    public void setIpAddr(String ipAddr) {
+        this.ipAddr = ipAddr;
     }
 }

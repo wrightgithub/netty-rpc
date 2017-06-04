@@ -28,7 +28,7 @@ public class RpcConsumerFactoryBean implements FactoryBean {
         PrintUtils.show("生成bean实例", String.valueOf(getObjectType()));
         return Proxy.newProxyInstance(getObjectType().getClassLoader(),
                                       new Class[] {getObjectType()},
-                                      new ConsumerProxy());
+                                      new ConsumerProxy(getIpAddr(),getObjectType().getName()));
 
     }
 

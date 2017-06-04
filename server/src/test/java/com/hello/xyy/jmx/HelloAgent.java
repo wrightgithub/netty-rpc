@@ -47,11 +47,11 @@ public class HelloAgent {
         adapter.start();
         mbs.registerMBean(adapter, adapterName);
 
-        int rmiPort = 1099;
-        Registry registry = LocateRegistry.createRegistry(rmiPort);
-
-        JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://localhost:" + rmiPort + "/" + domainName);
-        JMXConnectorServer jmxConnector = JMXConnectorServerFactory.newJMXConnectorServer(url, null, mbs);
-        jmxConnector.start();
+        //int rmiPort = 1099;
+        //Registry registry = LocateRegistry.createRegistry(rmiPort);
+        //
+        //JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://localhost:" + rmiPort + "/" + domainName);
+        //JMXConnectorServer jmxConnector = JMXConnectorServerFactory.newJMXConnectorServer(url, null, mbs);
+        //jmxConnector.start();
     }
 }

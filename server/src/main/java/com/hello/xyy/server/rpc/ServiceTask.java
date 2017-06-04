@@ -55,10 +55,17 @@ public class ServiceTask implements Runnable {
             }
             Request request = (Request)msg;
             response.setMessageId(request.getMessageId());
-            Object result = reflect(request);
+            Object result = null;
+            try {
+                result = reflect(request);
+                response.setResult(result);
+            } catch (InvocationTargetException e) {
+                response.setThrowable(e.getTargetException());
+            }catch (Throwable e){
+                response.setThrowable(e);
+            }
             response.setSuccess(true);
-            response.setResult(result);
-            logger.info("invoke success : {}.{} ,result = {}", request.getServerClass(), request.getMethod(), result);
+            logger.info("invoke success : {}.{} ,response = {}", request.getServerClass(), request.getMethod(), response);
         } catch (Exception e) {
             logger.error("server exception request is {}", msg, e);
             response.setSuccess(false);

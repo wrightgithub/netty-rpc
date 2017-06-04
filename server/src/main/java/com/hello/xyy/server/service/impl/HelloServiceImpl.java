@@ -1,7 +1,10 @@
 package com.hello.xyy.server.service.impl;
 
-import com.hello.xyy.api.HelloService;
+import java.util.List;
+
 import com.hello.xyy.annotation.RpcProvider;
+import com.hello.xyy.api.HelloService;
+import com.hello.xyy.api.exception.HelloException;
 import org.springframework.jmx.export.annotation.ManagedOperation;
 import org.springframework.jmx.export.annotation.ManagedResource;
 
@@ -23,6 +26,13 @@ public class HelloServiceImpl implements HelloService {
     @Override
     @ManagedOperation
     public String sayHello() {
+
+        try {
+            List list = null;
+            list.size();
+        } catch (Exception e) {
+            throw new HelloException("fuck this occur exception",e);
+        }
         return "hello world!";
     }
 
@@ -31,4 +41,5 @@ public class HelloServiceImpl implements HelloService {
     public String sayHello(String title, Long orderId) {
         return title + " " + orderId;
     }
+
 }

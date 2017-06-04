@@ -32,4 +32,5 @@ public class Hello implements HelloMBean {
     public void printHello(String whoName) {
         System.out.println("Hello, " + whoName);
     }
+
 }
